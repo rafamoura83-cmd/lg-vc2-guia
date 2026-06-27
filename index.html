@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LG VC2 — Guia de Lavagem</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1f1f1f;
+    --border: #2a2a2a;
+    --accent: #c8f135;
+    --accent2: #a8d420;
+    --text: #f0f0f0;
+    --muted: #888;
+    --danger: #ff4d4d;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-icon {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  header h1 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  header p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* STEP INDICATOR */
+  .steps {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all .3s;
+  }
+  .step-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+  .step-dot.done { background: var(--accent2); opacity: .5; }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.4px;
+  }
+
+  /* OPTIONS GRID */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .options.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .options.cols-1 { grid-template-columns: 1fr; }
+
+  .opt {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .opt:hover { border-color: var(--accent); background: #1a2200; }
+  .opt.selected { border-color: var(--accent); background: #1a2200; color: var(--accent); }
+  .opt .icon { font-size: 22px; flex-shrink: 0; }
+  .opt .label { line-height: 1.3; }
+  .opt .sub { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+
+  /* BTN */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    transition: all .2s;
+    margin-top: 16px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0d;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:disabled { opacity: .3; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+
+  /* RESULT */
+  .result-card {
+    background: linear-gradient(135deg, #1a2200 0%, #0f1a00 100%);
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .result-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #0d0d0d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .result-program {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .result-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .params {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .param {
+    background: rgba(0,0,0,.3);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .param-label {
+    font-size: 10px;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .param-value {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .tips {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .tips-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .tip {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 16px;
+    position: relative;
+  }
+  .tip:last-child { border-bottom: none; }
+  .tip::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+  /* SCREEN MANAGEMENT */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 40px 0;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 400px) {
+    .options { grid-template-columns: 1fr; }
+    .options.cols-3 { grid-template-columns: 1fr 1fr; }
+    .params { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">🫧</div>
+  <div>
+    <h1>LG VC2 — Guia de Lavagem</h1>
+    <p>Selecione as opções e receba a configuração ideal</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- SCREEN 1: Tipo de roupa -->
+  <div class="screen active" id="s1">
+    <div class="steps">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Passo 1 de 4</div>
+      <h2>Qual tipo de roupa?</h2>
+      <div class="options" id="opts-fabric">
+        <div class="opt" onclick="select('fabric','algodao',this)">
+          <span class="icon">👕</span>
+          <div class="label">Algodão<div class="sub">Camisetas, meias, roupas do dia a dia</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','cama',this)">
+          <span class="icon">🛏️</span>
+          <div class="label">Cama / Banho<div class="sub">Lençóis, fronhas, toalhas</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','sintetico',this)">
+          <span class="icon">🧪</span>
+          <div class="label">Sintético<div class="sub">Poliéster, nylon, lycra</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','delicado',this)">
+          <span class="icon">🌸</span>
+          <div class="label">Delicado<div class="sub">Lingerie, seda, renda</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','la',this)">
+          <span class="icon">🐑</span>
+          <div class="label">Lã / Mão<div class="sub">Tricô, cashmere</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','esportivo',this)">
+          <span class="icon">👟</span>
+          <div class="label">Esportivo<div class="sub">Dry-fit, roupas de academia</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','trabalho',this)">
+          <span class="icon">🦺</span>
+          <div class="label">Trabalho pesado<div class="sub">Macacão, jeans, carga</div></div>
+        </div>
+        <div class="opt" onclick="select('fabric','bebe',this)">
+          <span class="icon">🍼</span>
+          <div class="label">Bebê / Alérgico<div class="sub">Precisa higienização extra</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn1" disabled onclick="go('s2')">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Operação -->
+  <div class="screen" id="s2">
+    <div class="steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Passo 2 de 4</div>
+      <h2>O que deseja fazer?</h2>
+      <div class="options cols-1" id="opts-op">
+        <div class="opt" onclick="select('op','lavar',this)">
+          <span class="icon">🫧</span>
+          <div class="label">Só lavar<div class="sub">Lavagem completa com enxágue</div></div>
+        </div>
+        <div class="opt" onclick="select('op','secar',this)">
+          <span class="icon">💨</span>
+          <div class="label">Só secar<div class="sub">Roupas já lavadas que precisam secar</div></div>
+        </div>
+        <div class="opt" onclick="select('op','lavar-secar',this)">
+          <span class="icon">✨</span>
+          <div class="label">Lavar e secar<div class="sub">Ciclo completo — máx. 8kg</div></div>
+        </div>
+        <div class="opt" onclick="select('op','refresh',this)">
+          <span class="icon">🌬️</span>
+          <div class="label">Só refrescar (Vapor)<div class="sub">Roupa usada mas não suja</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn2" disabled onclick="go('s3')">Continuar →</button>
+      <button class="btn btn-ghost" onclick="go('s1')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Sujeira -->
+  <div class="screen" id="s3">
+    <div class="steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Passo 3 de 4</div>
+      <h2>Nível de sujeira?</h2>
+      <div class="options cols-3" id="opts-dirt">
+        <div class="opt" onclick="select('dirt','leve',this)">
+          <span class="icon">🟢</span>
+          <div class="label">Leve<div class="sub">Usada 1x</div></div>
+        </div>
+        <div class="opt" onclick="select('dirt','media',this)">
+          <span class="icon">🟡</span>
+          <div class="label">Média<div class="sub">Normal</div></div>
+        </div>
+        <div class="opt" onclick="select('dirt','pesada',this)">
+          <span class="icon">🔴</span>
+          <div class="label">Pesada<div class="sub">Muito suja</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn3" disabled onclick="go('s4')">Continuar →</button>
+      <button class="btn btn-ghost" onclick="go('s2')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Urgência -->
+  <div class="screen" id="s4">
+    <div class="steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Passo 4 de 4</div>
+      <h2>Tem pressa?</h2>
+      <div class="options cols-1" id="opts-time">
+        <div class="opt" onclick="select('time','nao',this)">
+          <span class="icon">🕰️</span>
+          <div class="label">Não — quero o melhor resultado<div class="sub">Ciclo completo otimizado</div></div>
+        </div>
+        <div class="opt" onclick="select('time','pouca',this)">
+          <span class="icon">⏱️</span>
+          <div class="label">Pouca pressa<div class="sub">Rápido mas eficaz (TurboWash 39)</div></div>
+        </div>
+        <div class="opt" onclick="select('time','muita',this)">
+          <span class="icon">⚡</span>
+          <div class="label">Muita pressa!<div class="sub">Rápido 14 min — sujeira leve só</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn4" disabled onclick="showResult()">Ver Configuração →</button>
+      <button class="btn btn-ghost" onclick="go('s3')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- SCREEN: Loading -->
+  <div class="screen" id="s-loading">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p style="color:var(--muted); font-size:14px;">Calculando configuração ideal...</p>
+    </div>
+  </div>
+
+  <!-- SCREEN: Result -->
+  <div class="screen" id="s-result">
+    <div class="result-card">
+      <div class="result-badge">⚙️ Configuração Ideal</div>
+      <div class="result-program" id="r-program">—</div>
+      <div class="result-desc" id="r-desc">—</div>
+      <div class="params">
+        <div class="param">
+          <div class="param-label">🌡️ Temperatura</div>
+          <div class="param-value" id="r-temp">—</div>
+        </div>
+        <div class="param">
+          <div class="param-label">💫 Centrifugação</div>
+          <div class="param-value" id="r-spin">—</div>
+        </div>
+        <div class="param">
+          <div class="param-label">⏱️ Tempo estimado</div>
+          <div class="param-value" id="r-time">—</div>
+        </div>
+        <div class="param">
+          <div class="param-label">🧺 Carga máx.</div>
+          <div class="param-value" id="r-load">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips" id="r-extras">
+      <div class="tips-title">💡 Dicas Extras</div>
+      <div id="r-tips-list"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="restart()">🔄 Nova Consulta</button>
+  </div>
+
+</main>
+
+<script>
+  const choices = { fabric: null, op: null, dirt: null, time: null };
+  const btns = { fabric: 'btn1', op: 'btn2', dirt: 'btn3', time: 'btn4' };
+
+  function select(key, val, el) {
+    choices[key] = val;
+    el.closest('.options').querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById(btns[key]).disabled = false;
+  }
+
+  function go(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screen).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function showResult() {
+    go('s-loading');
+    setTimeout(() => {
+      const r = calcResult();
+      document.getElementById('r-program').textContent = r.program;
+      document.getElementById('r-desc').textContent = r.desc;
+      document.getElementById('r-temp').textContent = r.temp;
+      document.getElementById('r-spin').textContent = r.spin;
+      document.getElementById('r-time').textContent = r.time;
+      document.getElementById('r-load').textContent = r.load;
+      const tipsList = document.getElementById('r-tips-list');
+      tipsList.innerHTML = r.tips.map(t => `<div class="tip">${t}</div>`).join('');
+      go('s-result');
+    }, 1200);
+  }
+
+  function calcResult() {
+    const { fabric, op, dirt, time } = choices;
+
+    // Refresh overrides everything
+    if (op === 'refresh') return {
+      program: 'Refresh', desc: 'Refresca com vapor sem lavar',
+      temp: '–', spin: '400 rpm', time: '~20 min', load: '1–2 kg',
+      tips: ['Coloque no máximo 2 peças', 'Ative o botão Vapor no painel', 'Ideal para terno, blazer e jeans']
+    };
+
+    // Only dry
+    if (op === 'secar') return {
+      program: 'Secar', desc: 'Secagem por ar quente — EcoHybrid',
+      temp: '60°C', spin: '–', time: '60–90 min', load: 'até 6 kg',
+      tips: ['Ative Secagem EcoHybrid para economizar energia', 'Não sobrecarregue o tambor', 'Retire imediatamente ao terminar para evitar amassados']
+    };
+
+    // Lavar e secar
+    if (op === 'lavar-secar') return {
+      program: 'Lavar + Secar (8kg)', desc: 'Ciclo completo em uma etapa',
+      temp: fabric === 'delicado' || fabric === 'la' ? '30°C' : '40°C',
+      spin: '800 rpm', time: '3–4h', load: 'até 8 kg',
+      tips: ['Não exceda 8kg para secagem eficaz', 'Use detergente líquido — menos espuma', 'Ative EcoHybrid para secar com economia']
+    };
+
+    // Urgência: muita pressa
+    if (time === 'muita') return {
+      program: 'Rápido 14', desc: 'Lavagem expressa em 14 minutos',
+      temp: 'Fria', spin: '800 rpm', time: '14 min', load: 'até 4 kg',
+      tips: ['Apenas para roupas com pouca sujeira', 'Não use para manchas difíceis', 'Limite a carga à metade do tambor']
+    };
+
+    // TurboWash 39
+    if (time === 'pouca') return {
+      program: 'TurboWash 39', desc: 'Lavagem eficiente em 39 minutos',
+      temp: fabric === 'delicado' || fabric === 'la' ? '30°C' : '40°C',
+      spin: '1200 rpm', time: '39 min', load: 'até 10 kg',
+      tips: ['Ideal para sujeira média', 'Ative Enxágue Extra se tiver pele sensível', 'Não indicado para lã ou delicados']
+    };
+
+    // Full programs by fabric + dirt
+    const programs = {
+      algodao: {
+        leve: { program: 'Algodão', temp: '30°C', spin: '1200 rpm', time: '55 min', load: '13 kg' },
+        media: { program: 'Algodão', temp: '40°C', spin: '1200 rpm', time: '60 min', load: '13 kg' },
+        pesada: { program: 'Algodão+', temp: '60°C', spin: '1400 rpm', time: '90 min', load: '13 kg' }
+      },
+      cama: {
+        leve: { program: 'Algodão', temp: '40°C', spin: '1200 rpm', time: '65 min', load: '13 kg' },
+        media: { program: 'Algodão', temp: '60°C', spin: '1200 rpm', time: '70 min', load: '13 kg' },
+        pesada: { program: 'Algodão+', temp: '95°C', spin: '1400 rpm', time: '120 min', load: '13 kg' }
+      },
+      sintetico: {
+        leve: { program: 'Tecidos Sintéticos', temp: '30°C', spin: '800 rpm', time: '50 min', load: '4 kg' },
+        media: { program: 'Tecidos Sintéticos', temp: '40°C', spin: '800 rpm', time: '55 min', load: '4 kg' },
+        pesada: { program: 'Tecidos Sintéticos', temp: '40°C', spin: '1000 rpm', time: '60 min', load: '4 kg' }
+      },
+      delicado: {
+        leve: { program: 'Delicados', temp: 'Fria', spin: '400 rpm', time: '40 min', load: '4 kg' },
+        media: { program: 'Delicados', temp: '30°C', spin: '400 rpm', time: '45 min', load: '4 kg' },
+        pesada: { program: 'Lavagem a Mão/Lã', temp: '30°C', spin: '400 rpm', time: '50 min', load: '2 kg' }
+      },
+      la: {
+        leve: { program: 'Lavagem a Mão/Lã', temp: 'Fria', spin: '400 rpm', time: '45 min', load: '2 kg' },
+        media: { program: 'Lavagem a Mão/Lã', temp: '30°C', spin: '400 rpm', time: '50 min', load: '2 kg' },
+        pesada: { program: 'Lavagem a Mão/Lã', temp: '30°C', spin: '600 rpm', time: '55 min', load: '2 kg' }
+      },
+      esportivo: {
+        leve: { program: 'Tecidos Sintéticos', temp: '30°C', spin: '800 rpm', time: '50 min', load: '4 kg' },
+        media: { program: 'Mix', temp: '40°C', spin: '1000 rpm', time: '55 min', load: '6 kg' },
+        pesada: { program: 'TurboWash 39', temp: '40°C', spin: '1200 rpm', time: '39 min', load: '10 kg' }
+      },
+      trabalho: {
+        leve: { program: 'Algodão', temp: '40°C', spin: '1200 rpm', time: '60 min', load: '13 kg' },
+        media: { program: 'Algodão+', temp: '60°C', spin: '1400 rpm', time: '90 min', load: '13 kg' },
+        pesada: { program: 'Algodão+', temp: '60°C', spin: '1400 rpm', time: '120 min', load: '13 kg' }
+      },
+      bebe: {
+        leve: { program: 'Antialérgico', temp: '60°C', spin: '1200 rpm', time: '90 min', load: '6 kg' },
+        media: { program: 'Antialérgico', temp: '60°C', spin: '1200 rpm', time: '90 min', load: '6 kg' },
+        pesada: { program: 'Antialérgico', temp: '95°C', spin: '1200 rpm', time: '120 min', load: '6 kg' }
+      }
+    };
+
+    const tipsMap = {
+      algodao: ['Vire camisetas coloridas ao avesso', 'Separe claras e escuras', 'Use detergente líquido para cores'],
+      cama: ['Lençóis dobrados ocupam mais espaço — não comprima', 'Adicione 1 bola de tênis para fofura', 'A 95°C elimina 99,9% de ácaros'],
+      sintetico: ['Nunca use acima de 40°C — deforma o tecido', 'Lave avesso para não pilling', 'Use saco de lavagem para peças pequenas'],
+      delicado: ['Nunca torça — pressione suavemente', 'Coloque dentro de saco de lavagem', 'Seque à sombra em superfície plana'],
+      la: ['Água fria preserva a fibra', 'Não use centrífuga acima de 600rpm', 'Seque deitado, nunca pendurado'],
+      esportivo: ['Não use amaciante — obstrui os poros do tecido', 'Lave avesso sempre', 'Centrifugação baixa preserva o elastano'],
+      trabalho: ['Pré-trate manchas de graxa com detergente direto', 'Ative Pré-lavagem para sujeira pesada', 'Separe do restante — pode soltar tinta'],
+      bebe: ['Sempre ative o Vapor para higienização total', 'Use sabão neutro e hipoalergênico', 'Adicione Enxágue Extra para remover todo resíduo']
+    };
+
+    const base = programs[fabric]?.[dirt] || programs.algodao.media;
+    const tips = tipsMap[fabric] || tipsMap.algodao;
+
+    const descs = {
+      algodao: 'Lavagem padrão para roupas de algodão do cotidiano',
+      cama: 'Ciclo robusto para itens de cama e banho',
+      sintetico: 'Temperatura controlada para não danificar fibras sintéticas',
+      delicado: 'Movimento suave e água fria para peças frágeis',
+      la: 'Ciclo delicado que protege a estrutura da lã',
+      esportivo: 'Preserva elasticidade e funcionalidade do tecido técnico',
+      trabalho: 'Alta agitação para sujeira industrial e pesada',
+      bebe: 'Vapor e temperatura alta para eliminação completa de germes'
+    };
+
+    return { ...base, desc: descs[fabric], tips };
+  }
+
+  function restart() {
+    choices.fabric = null; choices.op = null; choices.dirt = null; choices.time = null;
+    ['btn1','btn2','btn3','btn4'].forEach(b => document.getElementById(b).disabled = true);
+    document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    go('s1');
+  }
+</script>
+</body>
+</html>
