@@ -1,0 +1,1 @@
+# lg-vc2-guia
